@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+p {
+  font-family: font-text; }
+
+.input[type=text]:focus {
+  outline: none !important;
+  border-color: #ff3860;
+  box-shadow: 0 0 1px #ff3860; }
+
+.list-group .list-title h1 {
+  margin: 0;
+  padding-bottom: 0.7em; }
+.list-group .list-title hr {
+  margin-top: 0; }
+.list-group .list-content spam {
+  color: #D2D2D2; }
+.list-group .list-content a:hover {
+  color: #ff3860; }
+
+aside form {
+  margin-bottom: 1.4em; }
+aside .box:last-child {
+  margin-bottom: 1.4em; }
+aside .tags a:hover {
+  background-color: #ff3860;
+  color: white;
+  text-decoration: none; }
+aside .catch-email p {
+  margin-bottom: 0.8em; }
+
+@media only screen and (min-width: 1470px) {
+  aside {
+    margin-left: -110px; } }
+.navbar {
+  background-color: whitesmoke; }
+  .navbar .navbar-item {
+    font-size: 18px;
+    line-height: 3rem; }
+  .navbar .navbar-item:hover {
+    background-color: white;
+    color: #ff3860; }
+
+.header {
+  padding-top: 7rem;
+  padding-bottom: 7rem; }
+
+.post {
+  width: 90%;
+  margin: 0 auto; }
+  .post .content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 18px; }
+  .post .comments {
+    width: 90%; }
+  .post h1 {
+    font-family: "Inconsolata", monospace;
+    margin-bottom: 0.9rem !important;
+    padding: 0; }
+  .post .title-hr {
+    margin-bottom: 0.9rem !important;
+    padding: 0; }
+  .post p {
+    line-height: 2rem;
+    text-indent: 3rem; }
+
+.footer {
+  background-color: whitesmoke;
+  width: 100%;
+  min-height: 150px;
+  padding: 0;
+  margin-top: 2rem; }
+  .footer a {
+    color: #ff3860; }
+  .footer a:hover {
+    text-decoration: underline; }
+
+.is-vertical-center {
+  display: flex;
+  align-items: center; }
+
+.has-mx-auto {
+  margin: 0 auto; }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,29 @@
+.image-post {
+  display: block;
+  margin: 0 auto;
+  text-align: center; }
+
+.post {
+  max-width: 350px; }
+
+.pagination {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  max-width: 550px; }
+
+.popular-posts {
+  min-width: 800px !important; }
+
+.content-text span {
+  margin-right: 1.1rem; }
+
+.card-content span {
+  margin-right: 1.1rem; }
+.card-content h3 {
+  padding-top: 1rem;
+  text-transform: uppercase; }
+.card-content h1 {
+  margin-left: 10px;
+  width: 350px; }
+
+/*# sourceMappingURL=home.css.map */
