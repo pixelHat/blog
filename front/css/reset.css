@@ -2,7 +2,12 @@
 p {
   font-family: font-text; }
 
-.input[type=text]:focus {
+.input:focus {
+  outline: none !important;
+  border-color: #ff3860;
+  box-shadow: 0 0 1px #ff3860; }
+
+.textarea:focus {
   outline: none !important;
   border-color: #ff3860;
   box-shadow: 0 0 1px #ff3860; }

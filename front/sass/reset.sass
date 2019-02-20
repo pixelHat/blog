@@ -3,7 +3,12 @@
 p
     font-family: font-text
 
-.input[type=text]:focus
+.input:focus
+    outline: none !important
+    border-color: $color-red
+    box-shadow: 0 0 1px $color-red
+
+.textarea:focus
     outline: none !important
     border-color: $color-red
     box-shadow: 0 0 1px $color-red
