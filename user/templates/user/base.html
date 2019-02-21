@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+        <meta charset="utf-8">
+        <title>{% block title %} {% endblock %}</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet">
+        <script src="{% static 'js/main.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+        {% block styles %}{% endblock %}
+</head>
+<body>
+        {% include 'user/navbar.html' %}
+
+        <div class="container">
+            {% include 'user/header.html' %}
+
+            <!-- start blog posts -->
+            <div class="container blog-posts">
+                <section class="columns is-multiline is-variable is-2">
+                    <!-- start posts -->
+                    {% block content %} {% endblock %}
+                    <!-- end of posts -->
+
+                    <!-- start side menu -->
+                    {% include 'user/aside.html' %}
+                    <!-- end of side menu -->
+                </section>
+                <!-- end of blog posts -->
+            </div>
+            <!-- end of blog posts -->
+
+        {% block extra %}{% endblock %}
+        </div>
+
+    <footer class="footer is-vertical-center">
+        <div class="content has-mx-auto">
+            <p>
+                <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

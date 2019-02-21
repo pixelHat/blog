@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Inconsolata:400,700");
+p {
+  font-family: font-text; }
+
+.input:focus {
+  outline: none !important;
+  border-color: #ff3860;
+  box-shadow: 0 0 1px #ff3860; }
+
+.textarea:focus {
+  outline: none !important;
+  border-color: #ff3860;
+  box-shadow: 0 0 1px #ff3860; }
+
+/*# sourceMappingURL=reset.css.map */
