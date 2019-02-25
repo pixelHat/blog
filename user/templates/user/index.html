@@ -15,113 +15,68 @@
             <h1 class="title is-3">lasted posts</h1>
         </div>
     </div>
-    <!-- start row 1 -->
+    <!-- start row -->
+    {% for article in articles %}
+    <script>console.log({{forloop.counter0|divisibleby:2}})</script>
+    {% if forloop.counter0|divisibleby:2%}
     <div class="columns is-centered">
-        <!-- start row 1 -->
-        <!-- start POST 1 -->
+    {% endif %}
+        <!-- start POST -->
         <div class="column is-narrow">
-            <div class="card post has-mx-auto">
-                <div class="class-image">
-                    <figure class="image">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image"/>
-                    </figure>
+            <a href="{% url 'article' id=article.id %}">
+                <div class="card post has-mx-auto">
+                    <div class="class-image">
+                        <figure class="image">
+                            <img src="{{article.image.url}}" alt="Placeholder image"/>
+                        </figure>
+                    </div>
+                    <div class="card-content has-text-centered">
+                        {% for tag in article.tags.all %}
+                        <span class="tag is-link">{{tag}}</span>
+                        {% endfor %}
+                        <span class="is-small">{{article.published|date:"d M, Y"}}</span>
+                        <span><i class="fa fa-comment"></i> {{article.num_comments}}</span>
+                        <h3 class="subtitle is-5">{{article.title}}
+                            <!-- <a href="{% url 'article' id=article.id %}">{{article.title}} -->
+                        </h3>
+                    </div>
                 </div>
-                <div class="card-content has-text-centered">
-                    <span class="tag is-link">Python</span>
-                    <span class="is-small">15/05/2018</span>
-                    <span><i class="fa fa-comment"></i> 3</span>
-                    <h3 class="subtitle is-5">Post Title</h3>
-                </div>
-            </div>
+            </a>
         </div>
-        <!-- end of POST 1 -->
-        <!-- start POST 2 -->
-        <div class="column is-narrow">
-            <div class="card post has-mx-auto">
-                <div class="class-image">
-                    <figure class="image">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image"/>
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <span class="tag is-link">Python</span>
-                    <span class="is-small">15/05/2018</span>
-                    <span><i class="fa fa-comment"></i> 3</span>
-                    <h3 class="subtitle is-5">Post Title</h3>
-                </div>
-            </div>
+        <!-- end of POST -->
+    {% if forloop.counter0|divisibleby:2 is False %}
         </div>
-        <!-- end of POST 2 -->
-    </div>
-    <!-- end row 1 -->
-    <!-- start row 2 -->
-    <div class="columns is-centered">
-        <!-- start POST 1 -->
-        <div class="column is-narrow">
-            <div class="card post has-mx-auto">
-                <div class="class-image">
-                    <figure class="image">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image"/>
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <span class="tag is-link">Python</span>
-                    <span class="is-small">15/05/2018</span>
-                    <span><i class="fa fa-comment"></i> 3</span>
-                    <h3 class="subtitle is-5">Post Title</h3>
-                </div>
-            </div>
+        <!-- end row -->
+    {% endif %}
+    {% if forloop.counter0|divisibleby:2 and forloop.last %}
         </div>
-        <!-- end of POST 1 -->
-
-        <!-- start POST 2 -->
-        <div class="column is-narrow">
-            <div class="card post has-mx-auto">
-                <div class="class-image">
-                    <figure class="image">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image"/>
-                    </figure>
-                </div>
-                <div class="card-content has-text-centered">
-                    <span class="tag is-link">Python</span>
-                    <span class="is-small">15/05/2018</span>
-                    <span><i class="fa fa-comment"></i> 3</span>
-                    <h3 class="subtitle is-5">Post Title</h3>
-                </div>
-            </div>
-        </div>
-        <!-- end of POST 2 -->
-    </div>
-    <!-- end row 2 -->
+        <!-- end row -->
+    {% endif %}
+    {% endfor %}
 
     <!-- start pagination -->
     <div class="columns is-centered is-multiline">
         <article class="column is-three-quarters is-mx-auto">
             <div class="pagination is-centered has-mx-auto" aria-label="pagination">
-                <a class="pagination-previous">Anterior</a>
-                <a class="pagination-next">Próximo</a>
+                {% if articles.has_previous %}
+                <a href="?page={{articles.previous_page_number}}" class="pagination-previous">Anterior</a>
+                {% endif %}
+                {% if articles.has_next %}
+                <a href="?page={{articles.next_page_number}}" class="pagination-next">Próximo</a>
+                {% endif %}
                 <ul class="pagination-list is-marginless">
                     <li>
-                        <a class="pagination-link">1</a>
+                        {% if articles.has_previous %}
+                        <a href="?page={{articles.previous_page_number}}" class="pagination-link">{{articles.previous_page_number}}</a>
+                        {% endif %}
+                        <a href="?page={{articles.number}}" class="is-current pagination-link">{{articles.number}}</a>
+                        {% if articles.has_next %}
+                        <a href="?page={{articles.next_page_number}}" class="pagination-link">{{articles.next_page_number}}</a>
+                        {% endif %}
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="pagination-link">&hellip;</a>
-                    </li>
-                    <li>
-                        <a class="pagination-link">45</a>
-                    </li>
-                    <li>
-                        <a class="pagination-link">46</a>
-                    </li>
-                    <li>
-                        <a class="pagination-link">47</a>
-                    </li>
-                    <li>
-                        <a class="pagination-link">&hellip;</a>
-                    </li>
-                    <li>
-                        <a class="pagination-link">86</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </article>
@@ -140,75 +95,34 @@
             <hr />
         </div>
     </div>
-    <!-- start popular post 1 -->
+    <!-- start popular post -->
+    {% for article in popular_articles %}
     <div class="columns">
-        <div class="column is-11 is-offset-1 is-narrow">
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-128x128">
-                        <img src="https://bulma.io/images/placeholders/128x128.png" />
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="content">
-                        <div class="content-text">
-                            <span class="tag is-link">Python</span>
-                            <span class="is-small">15/05/2018</span>
-                            <span><i class="fa fa-comment"></i> 3</span>
-                            <h3>Post Title</h3>
+            <div class="column is-11 is-offset-1 is-narrow">
+                <a class="" href="{% url 'article' id=article.id %}">
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-128x128">
+                            <img src="{{article.image.url}}" />
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <div class="content">
+                            <div class="content-text">
+                                {% for tag in article.tags.all %}
+                                <span class="tag is-link">{{tag}}</span>
+                                {% endfor %}
+                                <span class="is-small">{{article.published|date:"D, d M, y"}}</span>
+                                <span><i class="fa fa-comment"></i> {{article.num_comments}}</span>
+                                <h3>{{article.title}}</h3>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </article>
-        </div>
+                </article>
+            </a>
+            </div>
     </div>
-    <!-- end of popular post 1 -->
-    <!-- start popular post 2 -->
-    <div class="columns">
-        <div class="column is-11 is-offset-1 is-narrow">
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-128x128">
-                        <img src="https://bulma.io/images/placeholders/128x128.png" />
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="content">
-                        <div class="content-text">
-                            <span class="tag is-link">Python</span>
-                            <span class="is-small">15/05/2018</span>
-                            <span><i class="fa fa-comment"></i> 3</span>
-                            <h3>Post Title</h3>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </div>
-    <!-- end of popular post 2 -->
-    <!-- popular post 3 -->
-    <div class="columns">
-        <div class="column is-11 is-offset-1 is-narrow">
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-128x128">
-                        <img src="https://bulma.io/images/placeholders/128x128.png" />
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="content">
-                        <div class="content-text">
-                            <span class="tag is-link">Python</span>
-                            <span class="is-small">15/05/2018</span>
-                            <span><i class="fa fa-comment"></i> 3</span>
-                            <h3>Post Title</h3>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </div>
-    <!-- end of popular post 3 -->
+    {% endfor %}
 </section>
 <!-- end of popular posts -->
 {% endblock %}

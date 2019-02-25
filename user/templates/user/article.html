@@ -1,0 +1,132 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %} Post {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/read.css' %}" />
+{% endblock %}
+
+{% block content %}
+<!-- start post -->
+<main class="column is-three-quarters-desktop is-12-tablet">
+    <article class="post">
+        <!-- start image -->
+        <div class="image-header has-text-centered">
+            <img class="is-800x200" src="{{article.image.url}}" alt="Placeholder image"/>
+        </div>
+        <!-- end of image -->
+
+        <!-- start text -->
+        <div class="content has-text-justified">
+            <h1 class="title is-3">{{article.title}}</h1>
+            <hr class="title-hr" />
+
+            {{article.text|safe}}
+        </div>
+        <!-- end of text -->
+    </article>
+    <article class="comments">
+        <div class="header">
+            <h3 class="title is-4">Comments</h3>
+            <hr />
+        </div>
+        <div class="messages">
+            <!-- start comments -->
+            {% for comment in comments %}
+            <article class="media">
+                <figure class="media-left">
+                    <p class="image">
+                        <img src="{{comment.user.image.url}}"> <!-- 128x128 -->
+                    </p>
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{comment.user.name}}</strong> - <small>{{comment.published}}</small>
+                            <br>
+                            {{comment.comment}}
+                        </p>
+                        <p>
+                            <a href="#">replay</a>
+                        </p>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p>seja o primeiro a comentar</p>
+            {% endfor %}
+            <!-- end of comments -->
+        </div>
+        <div class="comment-form">
+            <form method="POST">
+                <div class="field">
+                    <label class="label">
+                        Name
+                    </label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Name" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">
+                        Email
+                    </label>
+                    <div class="control">
+                        <input class="input" type="email" placeholder="Email" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">
+                        Message
+                    </label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="message"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </article>
+</main>
+<!-- end of post -->
+{% endblock %}
+
+{% block extra %}
+<!-- start related posts -->
+{% if related_articles %}
+<section class="section popular-posts">
+    <div class="columns">
+        <div class="column is-4 is-narrow">
+            <h3 class="title is-3">Related posts</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="columns is-1 is-desktop is-centered">
+        <!-- start related articles -->
+        {% for article in related_articles %}
+        <a href="{% url 'article' id=article.id %}">
+            <div class="column is-4-desktop is-narrow card" style="background-image: url({{article.image.url}});background-size: cover;">
+                <div class="card-content">
+                    <div class="has-text-centered">
+                        {% for tag in article.tags.all %}
+                        <span class="tag is-link">{{tag}}</span>
+                        {% endfor %}
+                        <span class="is-small">{{article.published|date:"d/m/Y"}}</span>
+                        <span><i class="fa fa-comment"></i> {{article.num_comments}}</span>
+                        <h3>{{article.title}}</h3>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        <!-- end of related articles -->
+    </div>
+</section>
+<!-- end of related posts -->
+{% endif %}
+{% endblock %}

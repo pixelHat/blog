@@ -6,6 +6,8 @@
 
 .post {
   max-width: 350px; }
+  .post img {
+    height: 300px !important; }
 
 .pagination {
   margin-top: 2rem;
@@ -16,6 +18,11 @@
 
 .popular-posts {
   min-width: 800px !important; }
+  .popular-posts img {
+    width: 128px;
+    height: 128px; }
+  .popular-posts a {
+    color: black; }
 
 .content-text span {
   margin-right: 1.1rem; }

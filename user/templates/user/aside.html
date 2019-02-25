@@ -18,36 +18,14 @@
         </div>
         <div class="list-content">
             <ul>
+                {% for cat in categories %}
                 <li class="list-item">
                     <div class="level">
-                        <a class="list-link">Python: orientado a objectos</a>
-                        <spam>(12)</spam>
+                        <a class="list-link">{{cat.name}}</a>
+                        <spam>{{cat.num_articles}}</spam>
                     </div>
                 </li>
-                <li class="list-item">
-                    <div class="level">
-                        <a class="list-link">Introdução ao Django</a>
-                        <spam>(5)</spam>
-                    </div>
-                </li>
-                <li class="list-item">
-                    <div class="level">
-                        <a class="list-link">Básico HTML e CSS</a>
-                        <spam>(23)</spam>
-                    </div>
-                </li>
-                <li class="list-item">
-                    <div class="level">
-                        <a class="list-link">React Básico</a>
-                        <spam>(7)</spam>
-                    </div>
-                </li>
-                <li class="list-item">
-                    <div class="level">
-                        <a class="list-link">Fazendo um site com Bulma</a>
-                        <spam>(9)</spam>
-                    </div>
-                </li>
+                {% endfor %}
             </ul>
         </div>
     </article>
@@ -58,12 +36,9 @@
         <h3 class="title is-5 has-text-centered">Tags</h3>
         <hr />
         <div class="tags">
-            <a class="tag is-link">Django</a>
-            <a class="tag is-link">Python</a>
-            <a class="tag is-link">Javascript</a>
-            <a class="tag is-link">Bulma</a>
-            <a class="tag is-link">HTML e CSS</a>
-            <a class="tag is-link">Reactjs</a>
+            {% for tag in tags %}
+            <a class="tag is-link">{{tag}}</a>
+            {% endfor %}
         </div>
     </article>
     <!-- end of tags -->
