@@ -7,13 +7,15 @@ from . import models
 
 
 def index(request):
-    articles = models.Article.objects.order_by('-published')
+    articles = models.Article.objects.order_by('-published')\
+                     .exclude(id__exact=1)
     paginator = Paginator(articles, 6)
     page = request.GET.get('page')
     articles_page = paginator.get_page(page)
     categories = models.Category.objects.all()
     tags = models.Tag.objects.all()
-    popular_articles = models.Article.objects.order_by('-views')[:3]
+    popular_articles = models.Article.objects.exclude(id__exact=1)\
+                             .order_by('-views')[:3]
     context = {
         'articles': articles_page,
         'categories': categories,
