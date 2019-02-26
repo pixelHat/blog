@@ -6,4 +6,5 @@ urlpatterns = [
     path('article/<int:id>', views.article, name='article'),
     path('search/<str:field>&<str:value>', views.search_field, name='search_field'),
     path('search/', views.search, name='search'),
+    path('contact/', views.contact, name='contact'),
 ]

@@ -39,7 +39,7 @@ class Article(models.Model):
     views = models.IntegerField(default=0)
     text = models.TextField()
     image = models.ImageField()
-    tags = models.ManyToManyField(Tag, null=True, blank=True,
+    tags = models.ManyToManyField(Tag, blank=True,
                                   related_name="tags")
     category = models.ForeignKey(Category, blank=True, null=True,
                                  related_name="category",
@@ -62,3 +62,13 @@ class Reply(models.Model):
     comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE,
                                    related_name="comment_parent")
     comment = models.TextField()
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    email = models.EmailField()
+
+    def __str__(self):
+        return f"{self.title}"
