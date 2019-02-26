@@ -1,8 +1,8 @@
 <aside class="column">
     <!-- start search box -->
-    <form class="" action="#">
+    <form class="" action="{% url 'search' %}">
         <div class="control has-icons-left">
-            <input class="input" type="text" placeholder="Pesquisar por ..." />
+            <input class="input" name='title' type="text" placeholder="Pesquisar por ..." />
             <span class="icon is-left">
                 <i class="fas fa-search"></i>
             </span>
@@ -21,7 +21,7 @@
                 {% for cat in categories %}
                 <li class="list-item">
                     <div class="level">
-                        <a class="list-link">{{cat.name}}</a>
+                        <a href="{% url 'search_field' field='category' value=cat.id %}" class="list-link">{{cat.name}}</a>
                         <spam>{{cat.num_articles}}</spam>
                     </div>
                 </li>
@@ -37,7 +37,7 @@
         <hr />
         <div class="tags">
             {% for tag in tags %}
-            <a class="tag is-link">{{tag}}</a>
+            <a href="{% url 'search_field' field='tags' value=tag.id %}" class="tag is-link">{{tag}}</a>
             {% endfor %}
         </div>
     </article>
