@@ -39,7 +39,8 @@ class Article(models.Model):
     views = models.IntegerField(default=0)
     text = models.TextField()
     image = models.ImageField()
-    tags = models.ManyToManyField(Tag, related_name="tags")
+    tags = models.ManyToManyField(Tag, null=True, blank=True,
+                                  related_name="tags")
     category = models.ForeignKey(Category, blank=True, null=True,
                                  related_name="category",
                                  on_delete=models.SET_NULL)
