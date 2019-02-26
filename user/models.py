@@ -33,14 +33,14 @@ class Tag(models.Model):
 
 
 class Article(models.Model):
-    deleted = models.BooleanField(default=True)
+    deleted = models.BooleanField(default=False)
     title = models.CharField(max_length=100, unique=True)
     published = models.DateTimeField()
     num_comments = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     text = models.TextField()
     image = models.ImageField()
-    tags = models.ManyToManyField(Tag, related_name="tags")
+    tags = models.ManyToManyField(Tag, null=True, blank=True, related_name="tags")
     category = models.ForeignKey(Category, blank=True, null=True,
                                  related_name="category",
                                  on_delete=models.SET_NULL)

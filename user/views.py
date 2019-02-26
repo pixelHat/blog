@@ -7,7 +7,7 @@ from . import models
 
 
 def index(request):
-    articles = models.Article.objects.all()
+    articles = models.Article.objects.order_by('-published')
     paginator = Paginator(articles, 6)
     page = request.GET.get('page')
     articles_page = paginator.get_page(page)
