@@ -69,11 +69,18 @@
         let request = new XMLHttpRequest();
         request.open("POST", {% url 'notify' %}, true);
         request.onload = () => {
+            const data = JSON.parse(request.responseText);
             const submit_btn = document.querySelector('#submit-email');
             submit_btn.style.display = 'None';
             const p = document.createElement('p');
-            p.className = 'has-text-danger';
-            p.innerHTML = 'Registrado com sucesso!';
+            if (data.wasRegistered == true) {
+                p.className = 'has-text-success';
+                p.innerHTML = 'Registrado com sucesso!';
+            }
+            else {
+                p.className = 'has-text-danger';
+                p.innerHTML = 'Este email já está registrado!';
+            }
             form.appendChild(p);
         }
         const data = new FormData();

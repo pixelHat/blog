@@ -1,4 +1,6 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+import random
 
 
 class User(models.Model):
@@ -6,8 +8,14 @@ class User(models.Model):
     email = models.EmailField()
     image = models.ImageField()
 
-    def create_or_get(self):
-        pass
+    def create_or_get(self, name, email):
+        try:
+            user = self.objects.get(email=email)
+        except ObjectDoesNotExist:
+            image = random.randint(1, 50)
+            user = self.objects.create(name=name, email=email,
+                                       image=f'avatars/{image}.png')
+        return user
 
     def __str__(self):
         return f"{self.email}"
@@ -78,4 +86,4 @@ class Notify(models.Model):
     """
     all users that want to be notify for latest articles.
     """
-    email = models.EmailField()
+    email = models.EmailField(unique=True)

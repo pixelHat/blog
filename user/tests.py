@@ -11,13 +11,20 @@ class ModelsTest(TestCase):
     def test_delete_article(self):
         pass
 
-    def test_create_user(self):
-        pass
+    def test_get_user(self):
+        """
+        should return a user with the same email or create a new.
+        """
+        user = {
+            'name': 'user_name',
+            'email': 'a@a.com',
+        }
+        u1 = models.User.create_or_get(models.User, **user)
+        u2 = models.User.create_or_get(models.User, **user)
+        self.assertEqual(u1.id, 1)
+        self.assertEqual(u1, u2)
 
     def test_try_create_existed_user(self):
-        pass
-
-    def test_get_user(self):
         pass
 
 
@@ -55,6 +62,9 @@ class ViewsTest(TestCase):
                                       published='2018-01-06')
 
     def test_index(self):
+        """
+        fail because the article.id == 1 is ignored.
+        """
         client = Client()
         response = client.get('/')
         self.assertEqual(response.status_code, 200)

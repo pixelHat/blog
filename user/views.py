@@ -1,12 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
-from django.http import Http404, HttpResponseRedirect
-from django.urls import reverse
+from django.db import IntegrityError
 from django.db.models import Q
+from django.http import Http404, HttpResponseRedirect, JsonResponse
+from django.urls import reverse
 from django.shortcuts import render
 from . import models
 from . import forms
-from django.http import JsonResponse
 
 
 def index(request):
@@ -118,7 +118,11 @@ def contact(request):
 
 
 def notify(request):
+    wasRegistered = True
     form = forms.NotifyForm(request.POST)
     if form.is_valid():
-        models.Notify.objects.create(email=form.cleaned_data['email'])
-    return JsonResponse({'hi': 'hi'})
+        try:
+            models.Notify.objects.create(email=form.cleaned_data['email'])
+        except IntegrityError:
+            wasRegistered = False
+    return JsonResponse({'wasRegistered': wasRegistered})
