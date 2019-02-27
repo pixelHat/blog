@@ -72,3 +72,10 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+
+class Notify(models.Model):
+    """
+    all users that want to be notify for latest articles.
+    """
+    email = models.EmailField()

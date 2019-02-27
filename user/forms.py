@@ -16,3 +16,8 @@ class ContactForm(forms.Form):
                              widget=forms.EmailInput(attrs=attrs))
     text = forms.CharField(label='Mensagem',
                            widget=forms.Textarea(attrs=attrs_text))
+
+
+class NotifyForm(forms.Form):
+    attrs = {'class': 'input', 'placeholder': 'email'}
+    email = forms.EmailField(widget=forms.EmailInput(attrs=attrs))

@@ -21,7 +21,7 @@
         <div class="content has-text-justified">
             <h1 class="title is-3">Contato</h1>
             <hr class="title-hr" />
-            
+
             <form action="{% url 'contact' %}" method="post">
                 {% csrf_token %}
                 {% for field in form %}

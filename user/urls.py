@@ -7,4 +7,5 @@ urlpatterns = [
     path('search/<str:field>&<str:value>', views.search_field, name='search_field'),
     path('search/', views.search, name='search'),
     path('contact/', views.contact, name='contact'),
+    path('notify/', views.notify, name='notify'),
 ]

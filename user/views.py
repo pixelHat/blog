@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from . import models
 from . import forms
+from django.http import JsonResponse
 
 
 def index(request):
@@ -23,6 +24,7 @@ def index(request):
         'categories': categories,
         'tags': tags,
         'popular_articles': popular_articles,
+        'form': forms.NotifyForm()
     }
     return render(request, 'user/index.html', context)
 
@@ -113,3 +115,10 @@ def contact(request):
                'tags': tags,
                }
     return render(request, 'user/contact.html', context)
+
+
+def notify(request):
+    form = forms.NotifyForm(request.POST)
+    if form.is_valid():
+        models.Notify.objects.create(email=form.cleaned_data['email'])
+    return JsonResponse({'hi': 'hi'})

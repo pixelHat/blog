@@ -47,14 +47,39 @@
     <article class="box has-text-centered catch-email">
         <h1 class="title is-3">Inscreva-se</h1>
         <p class="is-small">Para receber um email mensal com o resumo das novidades.</p>
-        <form class="" action="#">
+        <form id="catch-email">
+            {% csrf_token %}
+            {% for field in form %}
             <div class="control has-icons-left">
-                <input class="input" type="text" placeholder="email" />
+                {{field}}
                 <span class="icon is-left">
                     <i class="far fa-envelope"></i>
                 </span>
             </div>
+            {% endfor %}
+            <input id='submit-email' type="submit">
         </form>
     </article>
     <!-- end catch email -->
 </aside>
+
+<script>
+    let form = document.querySelector('#catch-email');
+    form.onsubmit = () => {
+        let request = new XMLHttpRequest();
+        request.open("POST", {% url 'notify' %}, true);
+        request.onload = () => {
+            const submit_btn = document.querySelector('#submit-email');
+            submit_btn.style.display = 'None';
+            const p = document.createElement('p');
+            p.className = 'has-text-danger';
+            p.innerHTML = 'Registrado com sucesso!';
+            form.appendChild(p);
+        }
+        const data = new FormData();
+        data.append('email', form.email.value);
+        data.append('csrfmiddlewaretoken', form.csrfmiddlewaretoken.value);
+        request.send(data);
+        return false;
+    }
+</script>
