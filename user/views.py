@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.shortcuts import render
 from . import models
 from . import forms
+import datetime
 
 
 def index(request):
@@ -48,6 +49,9 @@ def article(request, id):
         'tags': tags,
         'related_articles': related_articles,
         'comments': comments,
+        'form': forms.NotifyForm(),
+        'form_comment': forms.CommentForm(initial={'article': article.id,
+                                                   'replay': 0}),
     }
     return render(request, 'user/article.html', context)
 
@@ -126,3 +130,25 @@ def notify(request):
         except IntegrityError:
             wasRegistered = False
     return JsonResponse({'wasRegistered': wasRegistered})
+
+
+def comment(request):
+    form = forms.CommentForm(request.POST)
+    if form.is_valid():
+        reply = form.cleaned_data['reply']
+        article = models.Article.objects.get(pk=form.cleaned_data['article'])
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        message = form.cleaned_data['message']
+        user = models.User.create_or_get(models.User, name=name, email=email)
+        if reply == '0':
+            models.Comment.objects.create(article=article, user=user,
+                                          comment=message,
+                                          published=datetime.datetime.now())
+        else:
+            comment = models.Comment.objects.get(pk=reply)
+            models.Reply.objects.create(user=user,
+                                        comment_id=comment,
+                                        comment=message,
+                                        published=datetime.datetime.now())
+    return JsonResponse({'ok': True})

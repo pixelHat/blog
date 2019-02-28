@@ -59,17 +59,21 @@ class Article(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE,
-                                related_name="artifcle")
+                                related_name="article")
     user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             related_name="user")
+                             related_name="user_id")
     comment = models.TextField()
     published = models.DateField(default="2019-02-28")
 
 
 class Reply(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             default=None,
+                             related_name="replies")
     comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE,
                                    related_name="comment_parent")
     comment = models.TextField()
+    published = models.DateField(default="2019-02-28")
 
 
 class Contact(models.Model):

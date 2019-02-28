@@ -50,14 +50,18 @@
         <form id="catch-email">
             {% csrf_token %}
             {% for field in form %}
-            <div class="control has-icons-left">
-                {{field}}
-                <span class="icon is-left">
-                    <i class="far fa-envelope"></i>
-                </span>
+            <div class="field">
+                <div class="control has-icons-left">
+                    {{field}}
+                    <span class="icon is-left">
+                        <i class="far fa-envelope"></i>
+                    </span>
+                </div>
             </div>
             {% endfor %}
-            <input id='submit-email' type="submit">
+            <div class="field">
+                <input id='submit-email' class="button is-link" type="submit">
+            </div>
         </form>
     </article>
     <!-- end catch email -->
