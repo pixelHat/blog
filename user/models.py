@@ -64,6 +64,8 @@ class Comment(models.Model):
                              related_name="user_id")
     comment = models.TextField()
     published = models.DateField(default="2019-02-28")
+    was_read_by_manager = models.BooleanField(default=False)
+    is_on_the_waiting_list = models.BooleanField(default=False)
 
 
 class Reply(models.Model):
