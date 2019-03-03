@@ -9,8 +9,18 @@ from user import models
 def showComments(request):
     was_read_by_manager = Q(was_read_by_manager=False)
     is_on_the_waiting_list = Q(is_on_the_waiting_list=False)
-    comments = models.Comment.objects.filter(was_read_by_manager & is_on_the_waiting_list)
-    return render(request, 'manager/comments.html', {'comments': comments})
+    new_comments = models.Comment.objects.filter(was_read_by_manager
+                                                 & is_on_the_waiting_list)
+    was_read_by_manager = Q(was_read_by_manager=False)
+    is_on_the_waiting_list = Q(is_on_the_waiting_list=True)
+    waiting_comments = models.Comment.objects\
+                             .filter(was_read_by_manager
+                                     & is_on_the_waiting_list)
+    context = {
+        'new_comments': new_comments,
+        'waiting_comments': waiting_comments,
+    }
+    return render(request, 'manager/comments.html', context)
 
 
 def readComment(request):

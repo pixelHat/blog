@@ -9,70 +9,71 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
     <script src="{% static 'js/comments.js' %}"></script>
+    <script src="{% static 'js/tabs.js' %}"></script>
 </head>
 <body>
     <section class="section">
         <article class="container">
-            {% for comment in comments %}
-            <div class="columns is-centered" id="card-{{comment.id}}">
-                <div class="column is-8">
-                    <div class="card">
-                        <header class="card-header">
-                            <h1 class="card-header-title">{{comment.user.name}} - {{comment.article.title}}</h1>
-                            <span class="card-header-icon" onclick="read({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
-                        </header>
-                        <div class="card-content">
-                            <div class="content">
-                                <p>{{comment.comment}}</p>
+            <div class="tabs is-centered" id="menu-comentaries">
+                <ul>
+                    <li class="is-active" id="new" data-id="new-comments"><a>Comentários não lidos</a></li>
+                    <li id="waiting" data-id="waiting-comments"><a>Ler depois</a></li>
+                </ul>
+            </div>
+            <div id="new-comments">
+                {% for comment in new_comments %}
+                <div class="columns is-centered" id="card-{{comment.id}}">
+                    <div class="column is-8">
+                        <div class="card">
+                            <header class="card-header">
+                                <h1 class="card-header-title">{{comment.user.name}} - {{comment.article.title}}</h1>
+                                <span class="card-header-icon" onclick="read({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    <p>{{comment.comment}}</p>
+                                </div>
                             </div>
+                            <footer class="card-footer">
+                                <span class="card-footer-item"><a onclick="replyComment({{comment.id}});">Responder</a></span>
+                                <span class="card-footer-item"><a onclick="deleteComment({{comment.id}});">Deletar</a></span>
+                                <span class="card-footer-item"><a onclick="addWaitListComment({{comment.id}});">Responder Depois</a></span>
+                            </footer>
                         </div>
-                        <footer class="card-footer">
-                            <span class="card-footer-item"><a onclick="replyComment({{comment.id}});">Responder</a></span>
-                            <span class="card-footer-item"><a onclick="deleteComment({{comment.id}});">Deletar</a></span>
-                            <span class="card-footer-item"><a onclick="addWaitListComment({{comment.id}});">Responder Depois</a></span>
-                        </footer>
                     </div>
                 </div>
+                {% empty %}
+                <h1 class="title has-text-centered">Não há novos comentários.</h1>
+                {% endfor %}
+
             </div>
-            {% empty %}
-            <h1 class="title has-text-centered">Não há novos comentários.</h1>
-            {% endfor %}
+            <div id="waiting-comments" style="display: none">
+                {% for comment in waiting_comments %}
+                <div class="columns is-centered" id="card-{{comment.id}}">
+                    <div class="column is-8">
+                        <div class="card">
+                            <header class="card-header">
+                                <h1 class="card-header-title">{{comment.user.name}} - {{comment.article.title}}</h1>
+                                <span class="card-header-icon" onclick="read({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    <p>{{comment.comment}}</p>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <span class="card-footer-item"><a onclick="replyComment({{comment.id}});">Responder</a></span>
+                                <span class="card-footer-item"><a onclick="deleteComment({{comment.id}});">Deletar</a></span>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <h1 class="title has-text-centered">Não há novos comentários.</h1>
+                {% endfor %}
+            </div>
         </article>
     </section>
-
-    <script>
-        removeCard = (id) => {
-            const comment = document.querySelector(`#card-${id}`);
-            comment.style.display = 'none';
-        }
-
-        request = (id, url) => {
-            const request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.onload = () => {
-                const data = JSON.parse(request.responseText)
-                if (data.ok)
-                    removeCard(id);
-            }
-            request.send();
-        }
-
-        read = (id) => {
-            const url = `/manager/comments/read?id=${id}`
-            request(id, url);
-        }
-
-        deleteComment = (id) => {
-            const url = `/manager/comments/delete?id=${id}`;
-            request(id, url);
-        }
-
-        addWaitListComment = (id) => {
-            const url = `/manager/comments/add/waitList?id=${id}`;
-            request(id, url);
-        }
-    </script>
-
     <script id="reply-comment-form-template" type="text/template">
         <div class="column is-8">
             <div class="card">
