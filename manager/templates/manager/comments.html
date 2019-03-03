@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +7,8 @@
     <title>Comments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="{% static 'js/comments.js' %}"></script>
 </head>
 <body>
     <section class="section">
@@ -60,7 +63,6 @@
         }
 
         deleteComment = (id) => {
-            console.log('hi');
             const url = `/manager/comments/delete?id=${id}`;
             request(id, url);
         }
@@ -69,6 +71,45 @@
             const url = `/manager/comments/add/waitList?id=${id}`;
             request(id, url);
         }
+    </script>
+
+    <script id="reply-comment-form-template" type="text/template">
+        <div class="column is-8">
+            <div class="card">
+                <header class="card-header">
+                    <h1 class="card-header-title">Título</h1>
+                    {% verbatim %}
+                    <span class="card-header-icon" onclick="replyClose({{id_form}});"><i class="fas fa-times-circle" title='fechar'></i></span>
+                    {% endverbatim %}
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <form id="form-reply">
+                            <div class="field">
+                                <label class="label">Nome:</label>
+                                <div class="control">
+                                    <input type="text" name="name" class="input" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Mensagem:</label>
+                                <div class="control">
+                                    <textarea name="text" class="textarea" rows="5"></textarea>
+                                </div>
+                            </div>
+                            {% verbatim %}
+                            <input name="comment_id" type="hidden" value="{{id_form}}" />
+                            {% endverbatim %}
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-link">responder</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </script>
 </body>
 </html>

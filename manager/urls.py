@@ -6,4 +6,5 @@ urlpatterns = [
     path('comments/read/', views.readComment, name='readComment'),
     path('comments/delete/', views.deleteComment, name='deleteComment'),
     path('comments/add/waitList/', views.addWaitListComment, name='addWaitListComment'),
+    path('comments/reply', views.replyComment, name='replyComment'),
 ]

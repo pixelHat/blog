@@ -6,4 +6,5 @@ document.addEventListener('DOMContentLoaded', () => {
         navButton.classList.toggle('is-active');
         menuItems.classList.toggle('is-active');
     });
+    console.log(hello());
 });

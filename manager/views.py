@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
@@ -41,6 +42,22 @@ def addWaitListComment(request):
         comment = models.Comment.objects.get(pk=id)
         comment.is_on_the_waiting_list = True
         comment.save()
+        context = {'ok': True}
+    except (KeyError, ObjectDoesNotExist) as _:
+        context = {'ok': False}
+    return JsonResponse(context)
+
+
+def replyComment(request):
+    try:
+        user = models.User.objects.get(email='admin@admin.com')
+        comment_id = request.GET.get('comment_id')
+        text = request.GET.get('text')
+        comment = models.Comment.objects.get(pk=comment_id)
+        models.Reply.objects.create(user=user,
+                                    comment_id=comment,
+                                    comment=text,
+                                    published=datetime.now())
         context = {'ok': True}
     except (KeyError, ObjectDoesNotExist) as _:
         context = {'ok': False}
