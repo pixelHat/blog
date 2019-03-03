@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAIQ,kHAA0G;ACA1G,0BAAE;EACE,MAAM,EAAE,CAAC;EACT,cAAc,EAAE,KAAK;AACzB,0BAAE;EACE,UAAU,EAAE,CAAC;AAGjB,8BAAI;EACA,KAAK,EDXJ,OAAO;ACYZ,iCAAO;EACH,KAAK,EAAE,OAAmB",
-"sources": ["../../sass/variables.sass","../../sass/components/list-group.sass"],
-"names": [],
-"file": "list-group.css"
-}
