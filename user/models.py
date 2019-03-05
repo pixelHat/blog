@@ -15,7 +15,7 @@ class User(models.Model):
         except ObjectDoesNotExist:
             image = random.randint(1, 50)
             user = self.objects.create(name=name, email=email,
-                                       image=f'avatars/{image}.png')
+                                       image=f"avatars/{image}.png")
         return user
 
     def __str__(self):

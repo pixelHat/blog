@@ -153,7 +153,7 @@ class RegisterEmailTest(TestCase):
 
 
 class QueryArticles(TestCase):
-    from user import views
+    from user.views import querys
 
     def setUp(self):
         category1 = models.Category.objects.create(name='category 1')
@@ -193,7 +193,7 @@ class QueryArticles(TestCase):
     def test_latest_articles(self):
         pks = [i for i in range(7, 1, -1)]
         latest_articles = map(lambda x: models.Article.objects.get(pk=x), pks)
-        response = self.views.get_latest_articles()
+        response = self.querys.get_latest_articles()
         for (e1, e2) in zip(response, latest_articles):
             self.assertEqual(e1, e2)
 
@@ -202,7 +202,7 @@ class QueryArticles(TestCase):
         q1 = models.Article.objects.filter(pk=2)
         q2 = models.Article.objects.filter(pk=3)
         related_articles = q1.union(q2)
-        response = self.views.get_related_articles(article)
+        response = self.querys.get_related_articles(article)
         for (e1, e2) in zip(response, related_articles):
             self.assertEqual(e1, e2)
 
@@ -214,7 +214,7 @@ class QueryArticles(TestCase):
         for i, article in enumerate(popular_articles, 1):
             article.views = i*10
             article.save()
-        response = self.views.get_popular_articles()
+        response = self.querys.get_popular_articles()
         for (e1, e2) in zip(response, popular_articles[::-1]):
             self.assertEqual(e1, e2)
 
@@ -241,7 +241,7 @@ class ViewsTest(TestCase):
         client = Client()
         response = client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['articles']), 1)
+        self.assertEqual(len(response.context['articles']), 2)
         self.assertEqual(len(response.context['categories']), 1)
         self.assertEqual(len(response.context['tags']), 0)
         self.assertNotEqual(len(response.context['popular_articles']), 0)
