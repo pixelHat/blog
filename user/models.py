@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 import random
+from django.utils import timezone
 
 
 class User(models.Model):
@@ -40,9 +41,9 @@ class Tag(models.Model):
 
 
 class Article(models.Model):
-    deleted = models.BooleanField(default=True)
+    deleted = models.BooleanField(default=False)
     title = models.CharField(max_length=100, unique=True)
-    published = models.DateTimeField()
+    published = models.DateTimeField(default=timezone.now, blank=True)
     num_comments = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     text = models.TextField()
@@ -63,7 +64,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name="user_id")
     comment = models.TextField()
-    published = models.DateField(default="2019-02-28")
+    published = models.DateField(default=timezone.now, blank=True)
     was_read_by_manager = models.BooleanField(default=False)
     is_on_the_waiting_list = models.BooleanField(default=False)
 
@@ -75,7 +76,7 @@ class Reply(models.Model):
     comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE,
                                    related_name="comment_parent")
     comment = models.TextField()
-    published = models.DateField(default="2019-02-28")
+    published = models.DateField(default=timezone.now, blank=True)
 
 
 class Contact(models.Model):

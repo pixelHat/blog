@@ -7,24 +7,34 @@ from django.urls import reverse
 from django.shortcuts import render
 from . import models
 from . import forms
-import datetime
+from django.utils import timezone
+
+
+def get_latest_articles():
+    return models.Article.objects.order_by('-published').exclude(id__exact=1)
+
+
+def get_popular_articles():
+    return models.Article.objects.exclude(id__exact=1).order_by('-views')[:3]
+
+
+def get_related_articles(article):
+    return models.Article.objects.filter(category__exact=article.category)\
+                 .exclude(id__exact=article.id)
 
 
 def index(request):
-    articles = models.Article.objects.order_by('-published')\
-                     .exclude(id__exact=1)
+    articles = get_latest_articles()
     paginator = Paginator(articles, 6)
     page = request.GET.get('page')
     articles_page = paginator.get_page(page)
     categories = models.Category.objects.all()
     tags = models.Tag.objects.all()
-    popular_articles = models.Article.objects.exclude(id__exact=1)\
-                             .order_by('-views')[:3]
     context = {
         'articles': articles_page,
         'categories': categories,
         'tags': tags,
-        'popular_articles': popular_articles,
+        'popular_articles': get_popular_articles(),
         'form': forms.NotifyForm()
     }
     return render(request, 'user/index.html', context)
@@ -40,14 +50,11 @@ def article(request, id):
     categories = models.Category.objects.all()
     tags = models.Tag.objects.all()
     comments = models.Comment.objects.filter(article__exact=article.id)
-    related_articles = models.Article.objects\
-                                     .filter(category__exact=article.category)\
-                                     .exclude(id__exact=article.id)
     context = {
         'article': article,
         'categories': categories,
         'tags': tags,
-        'related_articles': related_articles,
+        'related_articles': get_related_articles(article),
         'comments': comments,
         'form': forms.NotifyForm(),
         'form_comment': forms.CommentForm(initial={'article': article.id,
@@ -62,7 +69,7 @@ def search_field(request, field, value):
     elif field == 'tags':
         articles = models.Article.objects.filter(tags__id=value)
     else:
-        return Http404()
+        raise Http404()
     paginator = Paginator(articles, 6)
     page = request.GET.get('page')
     articles_page = paginator.get_page(page)
@@ -133,6 +140,7 @@ def notify(request):
 
 
 def comment(request):
+    json_response = {'ok': False}
     form = forms.CommentForm(request.POST)
     if form.is_valid():
         reply = form.cleaned_data['reply']
@@ -141,14 +149,17 @@ def comment(request):
         email = form.cleaned_data['email']
         message = form.cleaned_data['message']
         user = models.User.create_or_get(models.User, name=name, email=email)
-        if reply == '0':
+        if not reply:
             models.Comment.objects.create(article=article, user=user,
                                           comment=message,
-                                          published=datetime.datetime.now())
+                                          published=timezone.now())
         else:
             comment = models.Comment.objects.get(pk=reply)
             models.Reply.objects.create(user=user,
                                         comment_id=comment,
                                         comment=message,
-                                        published=datetime.datetime.now())
-    return JsonResponse({'ok': True})
+                                        published=timezone.now())
+        json_response = {'ok': True}
+    else:
+        print('não validou')
+    return JsonResponse(json_response)
