@@ -1,12 +1,21 @@
-document.addEventListener('DOMContentLoaded', () => {
-});
+removeCard = (id) => {
+    const comment = document.querySelector(`#card-${id}`);
+    comment.style.display = 'none';
+}
 
-createContainer = (id, html) => {
+createReplyFormContainer = (id, html) => {
     const element = document.createElement('div');
     element.className = "columns is-centered";
     element.id = `form-${id}`;
     element.innerHTML = html;
     return element;
+}
+
+createReplyForm = (id) => {
+    const template = document.querySelector("#reply-comment-form-template");
+    const values = {id_form: id}
+    const output_mustache = Mustache.render(template.innerHTML, values);
+    return createReplyFormContainer(id, output_mustache);
 }
 
 updateSubmit = () => {
@@ -21,8 +30,8 @@ updateSubmit = () => {
         request.onload = () => {
             const data = JSON.parse(request.responseText);
             if (data.ok) {
-                read(comment_id);
-                replyClose(comment_id);
+                readComment(comment_id);
+                replyFormClose(comment_id);
             }
         }
         request.send();
@@ -31,62 +40,38 @@ updateSubmit = () => {
 }
 
 replyComment = (id) => {
-    const template = document.querySelector("#reply-comment-form-template");
-    const values = {id_form: id}
-    const output_mustache = Mustache.render(template.innerHTML, values);
+    const replyForm = createReplyForm(id);
     const comment = document.querySelector(`#card-${id}`);
-    const element = createContainer(id, output_mustache);
-    comment.parentNode.insertBefore(element, comment.nextSibling);
+    comment.parentNode.insertBefore(replyForm, comment.nextSibling);
     updateSubmit();
 }
 
-replyClose = (id) => {
+replyFormClose = (id) => {
     const form = document.querySelector(`#form-${id}`);
     form.style.display = 'none';
 }
 
-
-/**
- * remove the html of the comment.
-**/
-removeCard = (id) => {
-    const comment = document.querySelector(`#card-${id}`);
-    comment.style.display = 'none';
-}
-
-/**
- * send one request to server.
-**/
 request = (id, url) => {
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.onload = () => {
         const data = JSON.parse(request.responseText)
         if (data.ok)
-            removeCard(id);
+            this.removeCard(id);
     }
     request.send();
 }
 
-/**
- * set the comment with readed.
-**/
-read = (id) => {
+readComment = (id) => {
     const url = `/manager/comments/read?id=${id}`
     request(id, url);
 }
 
-/**
- * delete a comment from database.
-**/
 deleteComment = (id) => {
     const url = `/manager/comments/delete?id=${id}`;
     request(id, url);
 }
 
-/**
- * set the comment for read later.
-**/
 addWaitListComment = (id) => {
     const url = `/manager/comments/add/waitList?id=${id}`;
     request(id, url);

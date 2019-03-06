@@ -27,7 +27,7 @@
                         <div class="card">
                             <header class="card-header">
                                 <h1 class="card-header-title">{{comment.user.name}} - {{comment.article.title}}</h1>
-                                <span class="card-header-icon" onclick="read({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
+                                <span class="card-header-icon" onclick="readComment({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
                             </header>
                             <div class="card-content">
                                 <div class="content">
@@ -54,7 +54,7 @@
                         <div class="card">
                             <header class="card-header">
                                 <h1 class="card-header-title">{{comment.user.name}} - {{comment.article.title}}</h1>
-                                <span class="card-header-icon" onclick="read({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
+                                <span class="card-header-icon" onclick="readComment({{comment.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
                             </header>
                             <div class="card-content">
                                 <div class="content">
@@ -74,13 +74,15 @@
             </div>
         </article>
     </section>
+
+    <!-- start template for the reply form -->
     <script id="reply-comment-form-template" type="text/template">
         <div class="column is-8">
             <div class="card">
                 <header class="card-header">
                     <h1 class="card-header-title">Título</h1>
                     {% verbatim %}
-                    <span class="card-header-icon" onclick="replyClose({{id_form}});"><i class="fas fa-times-circle" title='fechar'></i></span>
+                    <span class="card-header-icon" onclick="replyFormClose({{id_form}});"><i class="fas fa-times-circle" title='fechar'></i></span>
                     {% endverbatim %}
                 </header>
                 <div class="card-content">
@@ -112,5 +114,6 @@
             </div>
         </div>
     </script>
+    <!-- end of comment form -->
 </body>
 </html>

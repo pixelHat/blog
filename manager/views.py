@@ -3,24 +3,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
+from functools import reduce
+import operator
 from user import models
 
 
 def showComments(request):
-    was_read_by_manager = Q(was_read_by_manager=False)
-    is_on_the_waiting_list = Q(is_on_the_waiting_list=False)
-    new_comments = models.Comment.objects.filter(was_read_by_manager
-                                                 & is_on_the_waiting_list)
-    was_read_by_manager = Q(was_read_by_manager=False)
-    is_on_the_waiting_list = Q(is_on_the_waiting_list=True)
-    waiting_comments = models.Comment.objects\
-                             .filter(was_read_by_manager
-                                     & is_on_the_waiting_list)
-    context = {
+    query_new_comments_list = [Q(was_read_by_manager=False),
+                               Q(is_on_the_waiting_list=False)]
+    query_new_comments = reduce(operator.and_, query_new_comments_list)
+    new_comments = models.Comment.objects.filter(query_new_comments)
+    query_waiting_comments_list = [Q(was_read_by_manager=False),
+                                   Q(is_on_the_waiting_list=False)]
+    query_waiting_comments = reduce(operator.and_, query_waiting_comments_list)
+    waiting_comments = models.Comment.objects.filter(query_waiting_comments)
+    json_response = {
         'new_comments': new_comments,
         'waiting_comments': waiting_comments,
     }
-    return render(request, 'manager/comments.html', context)
+    return render(request, 'manager/comments.html', json_response)
 
 
 def readComment(request):
@@ -29,10 +30,10 @@ def readComment(request):
         comment = models.Comment.objects.get(pk=id)
         comment.was_read_by_manager = True
         comment.save()
-        context = {'ok': True}
-    except (KeyError, ObjectDoesNotExist) as _:
-        context = {'ok': False}
-    return JsonResponse(context)
+        json_response = {'ok': True}
+    except (KeyError, ObjectDoesNotExist):
+        json_response = {'ok': False}
+    return JsonResponse(json_response)
 
 
 def deleteComment(request):
@@ -40,10 +41,10 @@ def deleteComment(request):
         id = request.GET.get('id')
         comment = models.Comment.objects.get(pk=id)
         comment.delete()
-        context = {'ok': True}
-    except (KeyError, ObjectDoesNotExist) as _:
-        context = {'ok': False}
-    return JsonResponse(context)
+        json_response = {'ok': True}
+    except (KeyError, ObjectDoesNotExist):
+        json_response = {'ok': False}
+    return JsonResponse(json_response)
 
 
 def addWaitListComment(request):
@@ -52,10 +53,10 @@ def addWaitListComment(request):
         comment = models.Comment.objects.get(pk=id)
         comment.is_on_the_waiting_list = True
         comment.save()
-        context = {'ok': True}
-    except (KeyError, ObjectDoesNotExist) as _:
-        context = {'ok': False}
-    return JsonResponse(context)
+        json_response = {'ok': True}
+    except (KeyError, ObjectDoesNotExist):
+        json_response = {'ok': False}
+    return JsonResponse(json_response)
 
 
 def replyComment(request):
@@ -68,7 +69,7 @@ def replyComment(request):
                                     comment_id=comment,
                                     comment=text,
                                     published=datetime.now())
-        context = {'ok': True}
-    except (KeyError, ObjectDoesNotExist) as _:
-        context = {'ok': False}
-    return JsonResponse(context)
+        json_response = {'ok': True}
+    except (KeyError, ObjectDoesNotExist):
+        json_response = {'ok': False}
+    return JsonResponse(json_response)

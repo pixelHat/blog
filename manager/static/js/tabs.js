@@ -1,23 +1,37 @@
+class CommmentsContainer {
+    constructor(id) {
+        this.link = document.querySelector(`#${id}`);
+        const id_container = this.link.dataset.id;
+        this.container_comments = document.querySelector(`#${id_container}`);
+    }
+
+    click = () => {
+        this.link.classList.toggle('is-active');
+        this.toggleStyleDisplay();
+    }
+
+    toggleStyleDisplay = () => {
+        const style = getComputedStyle(this.container_comments);
+        if (style.display === "block") {
+            this.container_comments.style.display = "none";
+        }
+        else
+            this.container_comments.style.display = "block";
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const tab_waiting_comments = document.querySelector("#waiting");
-    let id = tab_waiting_comments.dataset.id;
-    const container_waiting_comments = document.querySelector(`#${id}`);
-
-    const tab_new_comments = document.querySelector("#new");
-    id = tab_new_comments.dataset.id;
-    const container_new_comments = document.querySelector(`#${id}`);
-
-    tab_waiting_comments.addEventListener('click', () => {
-        tab_waiting_comments.classList.toggle('is-active');
-        tab_new_comments.classList.toggle('is-active');
-        container_waiting_comments.style.display = 'block';
-        container_new_comments.style.display = 'none';
-    });
-
-    tab_new_comments.addEventListener('click', () => {
-        tab_waiting_comments.classList.toggle('is-active');
-        tab_new_comments.classList.toggle('is-active');
-        container_waiting_comments.style.display = 'none';
-        container_new_comments.style.display = 'block';
+    const id_waiting_comments = 'waiting';
+    const id_new_comments = 'new';
+    const tabs = [document.querySelector(`#${id_waiting_comments}`),
+                  document.querySelector(`#${id_new_comments}`)
+    ]
+    const waiting_comments = new CommmentsContainer(id_waiting_comments);
+    const new_comments = new CommmentsContainer(id_new_comments);
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+            waiting_comments.click();
+            new_comments.click();
+        });
     });
 })
