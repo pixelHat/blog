@@ -84,6 +84,7 @@ class Contact(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     email = models.EmailField()
+    was_read_by_manager = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title}"

@@ -1,5 +1,5 @@
 removeCard = (id) => {
-    const comment = document.querySelector(`#card-${id}`);
+    const comment = document.querySelector(`${id}`);
     comment.style.display = 'none';
 }
 
@@ -57,22 +57,27 @@ request = (id, url) => {
     request.onload = () => {
         const data = JSON.parse(request.responseText)
         if (data.ok)
-            this.removeCard(id);
+            removeCard(id);
     }
     request.send();
 }
 
 readComment = (id) => {
     const url = `/manager/comments/read?id=${id}`
-    request(id, url);
+    request(`#card-${id}`, url);
 }
 
 deleteComment = (id) => {
     const url = `/manager/comments/delete?id=${id}`;
-    request(id, url);
+    request(`#card-${id}`, url);
 }
 
 addWaitListComment = (id) => {
     const url = `/manager/comments/add/waitList?id=${id}`;
-    request(id, url);
+    request(`#card-${id}`, url);
+}
+
+readContact = (id) => {
+    const url = `/manager/comments/read/contact?id=${id}`;
+    request(`#contact-${id}`, url);
 }

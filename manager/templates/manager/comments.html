@@ -16,8 +16,9 @@
         <article class="container">
             <div class="tabs is-centered" id="menu-comentaries">
                 <ul>
-                    <li class="is-active" id="new" data-id="new-comments"><a>Comentários não lidos</a></li>
-                    <li id="waiting" data-id="waiting-comments"><a>Ler depois</a></li>
+                    <li class="is-active is-tab-link" id="new" data-id="new-comments"><a>Comentários não lidos</a></li>
+                    <li class="is-tab-link" id="waiting" data-id="waiting-comments"><a>Ler depois</a></li>
+                    <li class="is-tab-link" id="contacts" data-id="new-contacts"><a>Contatos</a></li>
                 </ul>
             </div>
             <div id="new-comments">
@@ -70,6 +71,30 @@
                 </div>
                 {% empty %}
                 <h1 class="title has-text-centered">Não há novos comentários.</h1>
+                {% endfor %}
+            </div>
+            <div id="new-contacts" style="display: none">
+                {% for contact in contacts %}
+                <div class="columns is-centered" id="contact-{{contact.id}}">
+                    <div class="column is-8">
+                        <div class="card">
+                            <header class="card-header">
+                                <h1 class="card-header-title">{{contact.name}} - {{contact.title}}</h1>
+                                <span class="card-header-icon" onclick="readContact({{contact.id}});"><i class="fas fa-times-circle" title='marcar como lido'></i></span>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    <p>{{contact.text}}</p>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <span class="card-footer-item has-text-link">{{contact.email}}</span>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <h1 class="title has-text-centered">Não há contatos.</h1>
                 {% endfor %}
             </div>
         </article>
