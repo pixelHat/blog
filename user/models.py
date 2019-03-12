@@ -65,18 +65,9 @@ class Comment(models.Model):
                              related_name="user_id")
     comment = models.TextField()
     published = models.DateField(default=timezone.now, blank=True)
+    reply_id = models.IntegerField(null=True, blank=True, default=False)
     was_read_by_manager = models.BooleanField(default=False)
     is_on_the_waiting_list = models.BooleanField(default=False)
-
-
-class Reply(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             default=None,
-                             related_name="replies")
-    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE,
-                                   related_name="comment_parent")
-    comment = models.TextField()
-    published = models.DateField(default=timezone.now, blank=True)
 
 
 class Contact(models.Model):

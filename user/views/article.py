@@ -6,6 +6,12 @@ from user import forms
 from .querys import get_related_articles
 
 
+def get_comments(article):
+    comments = models.Comment.objects.filter(article__exact=article.id, reply_id__exact=False)
+    replies = map(lambda x: (x, models.Comment.objects.filter(reply_id__exact=x.id)), comments)
+    return list(replies)
+
+
 def article(request, id):
     try:
         article = models.Article.objects.get(pk=id)
@@ -15,7 +21,7 @@ def article(request, id):
     article.save()
     categories = models.Category.objects.all()
     tags = models.Tag.objects.all()
-    comments = models.Comment.objects.filter(article__exact=article.id)
+    comments = get_comments(article)
     context = {
         'article': article,
         'categories': categories,

@@ -41,10 +41,15 @@ aside .catch-email p {
   aside {
     margin-left: -60px; } }
 .navbar {
-  background-color: whitesmoke; }
+  background-color: whitesmoke;
+  min-height: 100px; }
   .navbar .navbar-item {
     font-size: 18px;
     line-height: 3rem; }
+    .navbar .navbar-item img {
+      max-height: none;
+      height: 25px;
+      width: 183px; }
   .navbar .navbar-item:hover {
     background-color: white;
     color: #ff3860; }

@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from user import models
 from user import forms
-from django.utils import timezone
 
 
 def comment(request):
@@ -17,12 +16,10 @@ def comment(request):
         user = models.User.create_or_get(models.User, name=name, email=email)
         if not reply:
             models.Comment.objects.create(article=article, user=user,
-                                          comment=message,
-                                          published=timezone.now())
+                                          comment=message)
         else:
-            comment = models.Comment.objects.get(pk=reply)
-            models.Reply.objects.create(user=user,
-                                        comment_id=comment,
-                                        comment=message,
-                                        published=timezone.now())
+            models.Comment.objects.create(article=article,
+                                          user=user,
+                                          reply_id=reply,
+                                          comment=message)
     return JsonResponse(json_response)
