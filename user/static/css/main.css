@@ -42,7 +42,7 @@ aside .catch-email p {
     margin-left: -60px; } }
 .navbar {
   background-color: whitesmoke;
-  min-height: 100px; }
+  min-height: 50px; }
   .navbar .navbar-item {
     font-size: 18px;
     line-height: 3rem; }

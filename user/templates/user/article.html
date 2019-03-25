@@ -5,6 +5,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{% static 'css/read.css' %}" />
+<link rel="stylesheet" href="{% static 'css/prism.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -164,4 +165,6 @@
 </section>
 <!-- end of related posts -->
 {% endif %}
+<script src="{% static 'js/prism.js' %}"></script>
+<!-- <script src="js/main.js"></script> -->
 {% endblock %}
