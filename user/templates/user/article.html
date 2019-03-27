@@ -4,8 +4,8 @@
 {% block title %} Post {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'css/read.css' %}" />
-<link rel="stylesheet" href="{% static 'css/prism.css' %}" />
+<link rel="stylesheet" href="{% static 'user/css/read.css' %}" />
+<link rel="stylesheet" href="{% static 'user/css/prism.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -99,7 +99,7 @@
                 {% endfor %}
                 <div class="field">
                     <div class="control">
-                        <button class="button is-link">Submit</button>
+                        <button type="submit" class="button is-link">Submit</button>
                     </div>
                 </div>
             </form>
@@ -126,7 +126,7 @@
         data.append('reply', form_comment.reply.value);
         data.append('csrfmiddlewaretoken', form_comment.csrfmiddlewaretoken.value);
         request.send(data);
-        return true;
+        return false;
     }
 </script>
 <!-- end of post -->
@@ -165,6 +165,5 @@
 </section>
 <!-- end of related posts -->
 {% endif %}
-<script src="{% static 'js/prism.js' %}"></script>
-<!-- <script src="js/main.js"></script> -->
+<script src="{% static 'user/js/prism.js' %}"></script>
 {% endblock %}
