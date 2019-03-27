@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
@@ -8,6 +9,7 @@ import operator
 from user import models
 
 
+@login_required(login_url='/admin/')
 def showComments(request):
     query_new_comments_list = [Q(was_read_by_manager=False),
                                Q(is_on_the_waiting_list=False)]
@@ -26,6 +28,7 @@ def showComments(request):
     return render(request, 'manager/comments.html', json_response)
 
 
+@login_required(login_url='/admin/')
 def readComment(request):
     try:
         id = request.GET.get('id')
@@ -38,6 +41,7 @@ def readComment(request):
     return JsonResponse(json_response)
 
 
+@login_required(login_url='/admin/')
 def deleteComment(request):
     try:
         id = request.GET.get('id')
@@ -49,6 +53,7 @@ def deleteComment(request):
     return JsonResponse(json_response)
 
 
+@login_required(login_url='/admin/')
 def addWaitListComment(request):
     try:
         id = request.GET.get('id')
@@ -61,6 +66,7 @@ def addWaitListComment(request):
     return JsonResponse(json_response)
 
 
+@login_required(login_url='/admin/')
 def replyComment(request):
     try:
         user = models.User.objects.get(email='admin@admin.com')
@@ -77,6 +83,7 @@ def replyComment(request):
     return JsonResponse(json_response)
 
 
+@login_required(login_url='/admin/')
 def readContact(request):
     try:
         id = request.GET.get('id')

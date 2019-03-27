@@ -2,3 +2,4 @@ front/
 media/
 __pycache__/
 db.sqlite3
+.sass-cache/
