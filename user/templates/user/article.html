@@ -34,7 +34,7 @@
         </div>
         <div class="messages">
             <!-- start comments -->
-            {% for comment, replies in comments %}
+            {% for comment in comments %}
             <article class="media">
                 <figure class="media-left">
                     <p class="image">
@@ -48,32 +48,7 @@
                             <br>
                             {{comment.comment}}
                         </p>
-                        <p>
-                            <a href="#form_comment" onclick="reply({{comment.id}});">reply</a>
-                        </p>
                     </div>
-
-                    {% for comment in replies %}
-                    <article class="media">
-                        <figure class="media-left">
-                            <p class="image">
-                                <img src="{{comment.user.image.url}}"> <!-- 128x128 -->
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong>{{comment.user.name}}</strong> - <small>{{comment.published}}</small>
-                                    <br>
-                                    {{comment.comment}}
-                                </p>
-                                <p>
-                                    <a href="#form_comment" onclick="reply({{comment.id}});">reply</a>
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-                    {% endfor %}
                 </div>
             </article>
             {% empty %}
@@ -99,7 +74,7 @@
                 {% endfor %}
                 <div class="field">
                     <div class="control">
-                        <button type="submit" class="button is-link">Submit</button>
+                        <input type="submit" class="button is-link" value="comentar" />
                     </div>
                 </div>
             </form>
@@ -107,25 +82,21 @@
     </article>
 </main>
 <script>
-    const reply = id => {
-        document.querySelector('#id_reply').value = id;
-    }
-
     const form_comment = document.querySelector('#form_comment');
     form_comment.onsubmit = () => {
         const request = new XMLHttpRequest();
         request.open('POST', {% url 'comment' %}, true);
-        request.onload = () => {
-            console.log('yes');
-        }
         const data = new FormData();
         data.append('name', form_comment.name.value);
         data.append('email', form_comment.email.value);
         data.append('message', form_comment.message.value);
         data.append('article', form_comment.article.value);
-        data.append('reply', form_comment.reply.value);
         data.append('csrfmiddlewaretoken', form_comment.csrfmiddlewaretoken.value);
         request.send(data);
+
+        request.onload = () => {
+            console.log('yes');
+        }
         return false;
     }
 </script>

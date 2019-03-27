@@ -7,6 +7,7 @@ from user import models
 IMAGE = tempfile.NamedTemporaryFile(suffix=".jpg").name
 
 
+from user.views.comment import get_comments
 class CommentTest(TestCase):
     from user import forms
 
@@ -22,8 +23,8 @@ class CommentTest(TestCase):
             'email': 'user1@email.com',
             'image': IMAGE,
         }
-        models.Article.objects.create(**article_input)
-        models.User.objects.create(**user1_input)
+        self.article = models.Article.objects.create(**article_input)
+        self.user = models.User.objects.create(**user1_input)
 
     def test_create_comment_for_existent_user(self):
         """
@@ -60,7 +61,6 @@ class CommentTest(TestCase):
 
     def test_comment_form(self):
         form_input = {
-            'reply': 0,
             'article': 1,
             'name': 'user',
             'email': 'user@email.com',
@@ -71,7 +71,6 @@ class CommentTest(TestCase):
 
     def test_comment_form_invalid_article_field(self):
         form_input = {
-            'reply': 0,
             'article': models.Article.objects.count() + 1,
             'name': 'user',
             'email': 'user@email.com',
@@ -80,16 +79,13 @@ class CommentTest(TestCase):
         form = self.forms.CommentForm(data=form_input)
         self.assertFalse(form.is_valid())
 
-    def test_comment_form_invalid_reply_field(self):
-        form_input = {
-            'reply': models.Article.objects.count() + 1,
-            'article': 1,
-            'name': 'user',
-            'email': 'user@email.com',
-            'message': 'comment form user 1',
-        }
-        form = self.forms.CommentForm(data=form_input)
-        self.assertFalse(form.is_valid())
+    def test_get_comments(self):
+        c1 = models.Comment.objects.create(article=self.article, user=self.user)
+        c2 = models.Comment.objects.create(article=self.article, user=self.user)
+        c3 = models.Comment.objects.create(article=self.article, user=self.user)
+        expected = [c1, c2, c3]
+        result = get_comments(self.article)
+        self.assertEqual(expected, list(result))
 
 
 class SearchTest(TestCase):

@@ -36,7 +36,6 @@ class CommentForm(forms.Form):
     message = forms.CharField(label='Mensagem',
                               widget=forms.Textarea(attrs={'class': 'textarea'}))
     article = forms.CharField(widget=forms.HiddenInput())
-    reply = forms.IntegerField(widget=forms.HiddenInput())
 
     def clean_article(self):
         article = self.cleaned_data.get('article')
@@ -46,13 +45,3 @@ class CommentForm(forms.Form):
             raise forms.ValidationError('Invalid article',
                                         code='invalid article')
         return article
-
-    def clean_reply(self):
-        reply = self.cleaned_data.get('reply')
-        if reply:
-            try:
-                self.Comment.objects.get(pk=reply)
-            except ObjectDoesNotExist:
-                raise forms.ValidationError('Invalid comment id',
-                                            code='invalid comment id')
-        return reply
