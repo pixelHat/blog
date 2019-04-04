@@ -4,12 +4,12 @@ class CommmentsContainer {
         this.container_comments = document.querySelector(`#${id_container}`);
     }
 
-    show = () => {
+    show () {
         this.link.classList.add('is-active');
         this.container_comments.style.display = "block";
     }
 
-    hidden = () => {
+    hidden () {
         this.link.classList.remove("is-active");
         this.container_comments.style.display = "none";
     }

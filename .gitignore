@@ -3,3 +3,5 @@ media/
 __pycache__/
 db.sqlite3
 .sass-cache/
+venv/
+node_modules/
