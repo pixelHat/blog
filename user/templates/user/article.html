@@ -32,7 +32,7 @@
             <h3 class="title is-4">Comments</h3>
             <hr />
         </div>
-        <div class="messages">
+        <div class="messages" id="comments_body">
             <!-- start comments -->
             {% for comment in comments %}
             <article class="media">
@@ -56,8 +56,10 @@
             {% endfor %}
             <!-- end of comments -->
         </div>
+
+        <!-- start comment form -->
         <div class="comment-form">
-            <form method="POST" id="form_comment">
+            <form action="{% url 'comment' %}" method="POST" id="form_comment">
                 {% csrf_token %}
                 {% for field in form_comment.visible_fields %}
                 <div class="field">
@@ -79,28 +81,9 @@
                 </div>
             </form>
         </div>
+        <!-- end of comment form -->
     </article>
 </main>
-<script>
-    const form_comment = document.querySelector('#form_comment');
-    form_comment.onsubmit = () => {
-        const request = new XMLHttpRequest();
-        request.open('POST', {% url 'comment' %}, true);
-        const data = new FormData();
-        data.append('name', form_comment.name.value);
-        data.append('email', form_comment.email.value);
-        data.append('message', form_comment.message.value);
-        data.append('article', form_comment.article.value);
-        data.append('csrfmiddlewaretoken', form_comment.csrfmiddlewaretoken.value);
-        request.send(data);
-
-        request.onload = () => {
-            console.log('yes');
-        }
-        return false;
-    }
-</script>
-<!-- end of post -->
 {% endblock %}
 
 {% block extra %}
