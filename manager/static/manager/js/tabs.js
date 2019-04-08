@@ -1,47 +1,51 @@
-class CommmentsContainer {
-    constructor(tab_link, id_container) {
-        this.link = tab_link;
-        this.container_comments = document.querySelector(`#${id_container}`);
-    }
-
-    show () {
-        this.link.classList.add('is-active');
-        this.container_comments.style.display = "block";
-    }
-
-    hidden () {
-        this.link.classList.remove("is-active");
-        this.container_comments.style.display = "none";
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    const tabs_links = document.querySelectorAll(".is-tab-link");
-    const containers = getContainers(tabs_links);
-    const tabs_links_length = tabs_links.length;
-    const containers_length = containers.length;
-    for (let i = 0; i < tabs_links_length; i++) {
-        tabs_links[i].addEventListener('click', (event) => {
-            containers[i].show();
-            const hiddens_index = generateSeries(containers_length);
-            hiddens_index.splice(i, 1);
-            for (const j of hiddens_index)
-                containers[j].hidden();
-        });
-    }
-})
+    new Tabs();
+});
 
-getContainers = (tabs_links) => {
-    const containers = []
-    for(let tab_link of tabs_links) {
-        const id = tab_link.dataset.id;
-        const container = new CommmentsContainer(tab_link, id);
-        containers.push(container);
+class Tabs {
+    constructor() {
+        const tabs_list = document.querySelectorAll('.tabs ul');
+        this.start(tabs_list);
+        this.create_clicks(tabs_list);
     }
-    return containers;
-}
 
-generateSeries = (max) => {
-    const series = Array.apply(0, Array(max)).map((_, idx) => idx);
-    return series;
+    start(tabs_list) {
+        for (const tabs of tabs_list) {
+            const id_container_content = tabs.dataset.container;
+            for (const li of tabs.children)
+                if (!li.className.includes("is-active"))
+                    this.hidden_content(li, id_container_content);
+        }
+    }
+
+    create_clicks(tabs_list) {
+        for (const tabs of tabs_list) {
+            const id_container_content = tabs.dataset.container;
+            const li_list = tabs.children;
+            for (const li of li_list) {
+                const link = li.children[0];
+                link.onclick = (event) => {
+                    this.add_click(event, li_list, id_container_content);
+                };
+            }
+        }
+    }
+
+    add_click(event, li_list, id_container_content) {
+        for (const li of li_list) {
+            this.hidden_content(li, id_container_content);
+        }
+        const id_content = event.target.dataset.content;
+        const content = document.querySelector(`#${id_container_content} #${id_content}`);
+        content.style.display = 'block';
+        event.target.parentNode.classList.add('is-active');
+    }
+
+    hidden_content(li, id_container_content) {
+        const link = li.children[0];
+        const id_content = link.dataset.content;
+        li.classList.remove("is-active");
+        const content = document.querySelector(`#${id_container_content} #${id_content}`);
+        content.style.display = 'none';
+    }
 }
