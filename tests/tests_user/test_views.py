@@ -3,11 +3,11 @@ from django.test import Client, TestCase
 import tempfile
 from unittest import skip
 from user import models
+from user.views.comment import get_comments
 
 IMAGE = tempfile.NamedTemporaryFile(suffix=".jpg").name
 
 
-from user.views.comment import get_comments
 class CommentTest(TestCase):
     from user import forms
 
@@ -35,8 +35,7 @@ class CommentTest(TestCase):
                 'email': 'user1@email.com', 'message': 'comment user 1'
                 }
         response = client.post('/comment/', data)
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'ok': True})
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(len(models.User.objects.all()), 1)
 
     def test_create_comment_for_new_user(self):
@@ -54,8 +53,7 @@ class CommentTest(TestCase):
                                              'article': 1,
                                              'email': 'user2@email.com',
                                              'message': 'comment user 2'})
-        self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'ok': True})
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(len(models.Comment.objects.all()), 2)
         self.assertEqual(len(models.User.objects.all()), 2)
 
@@ -153,34 +151,34 @@ class QueryArticles(TestCase):
 
     def setUp(self):
         category1 = models.Category.objects.create(name='category 1')
-        articles = ({'title': 'article 1', 'published': '2018-01-01',
+        articles = ({'title': 'article 1', 'published': '2018-01-01T13:20:30+03:00',
                      'text': 'body text of the article 1', 'image': IMAGE,
                      'category': category1,
                      },
                     {
-                    'title': 'article 2', 'published': '2018-01-02',
+                    'title': 'article 2', 'published': '2018-01-02T13:20:30+03:00',
                     'text': 'body text of the article 2', 'image': IMAGE,
                     'category': category1,
                     },
                     {
-                    'title': 'article 3', 'published': '2018-01-03',
+                    'title': 'article 3', 'published': '2018-01-03T13:20:30+03:00',
                     'text': 'body text of the article 3', 'image': IMAGE,
                     'category': category1,
                     },
                     {
-                    'title': 'article 4', 'published': '2018-01-04',
+                    'title': 'article 4', 'published': '2018-01-04T13:20:30+03:00',
                     'text': 'body text of the article 4', 'image': IMAGE,
                     },
                     {
-                    'title': 'article 5', 'published': '2018-01-05',
+                    'title': 'article 5', 'published': '2018-01-05T13:20:30+03:00',
                     'text': 'body text of the article 5', 'image': IMAGE,
                     },
                     {
-                    'title': 'article 6', 'published': '2018-01-06',
+                    'title': 'article 6', 'published': '2018-01-06T13:20:30+03:00',
                     'text': 'body text of the article 6', 'image': IMAGE,
                     },
                     {
-                    'title': 'article 7', 'published': '2018-01-07',
+                    'title': 'article 7', 'published': '2018-01-07T13:20:30+03:00',
                     'text': 'body text of the article 7', 'image': IMAGE,
                     })
         for article in articles:
@@ -222,11 +220,11 @@ class QueryArticles(TestCase):
 class ViewsTest(TestCase):
     def setUp(self):
         category1 = models.Category.objects.create(name='category 1')
-        article_input1 = {'title': 'article 1', 'published': '2018-01-01',
+        article_input1 = {'title': 'article 1', 'published': '2018-01-01T13:20:30+03:00',
                           'text': 'body text of the article 1', 'image': IMAGE,
                           'category': category1,
                           }
-        article_input2 = {'title': 'article 2', 'published': '2018-01-02',
+        article_input2 = {'title': 'article 2', 'published': '2018-01-02T13:20:30+03:00',
                           'text': 'body text of the article 2', 'image': IMAGE,
                           'category': category1,
                           }

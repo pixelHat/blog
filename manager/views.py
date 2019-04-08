@@ -19,7 +19,6 @@ def showComments(request):
                                    Q(is_on_the_waiting_list=True)]
     query_waiting_comments = reduce(operator.and_, query_waiting_comments_list)
     waiting_comments = models.Comment.objects.filter(query_waiting_comments)
-    print(waiting_comments)
     json_response = {
         'new_comments': new_comments,
         'waiting_comments': waiting_comments,

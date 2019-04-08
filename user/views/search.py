@@ -9,9 +9,11 @@ from .querys import get_popular_articles
 
 def search_field(request, field, value):
     if field == 'category':
-        articles = models.Article.objects.filter(category__id=value)
+        articles = models.Article.objects.filter(category__id=value)\
+                         .order_by('-published')
     elif field == 'tags':
-        articles = models.Article.objects.filter(tags__id=value)
+        articles = models.Article.objects.filter(tags__id=value)\
+                         .order_by('-published')
     else:
         raise Http404()
     paginator = Paginator(articles, 6)
@@ -33,7 +35,7 @@ def search(request):
     title = request.GET.get('title')
     q1 = Q(title__contains=title)
     q2 = Q(text__contains=title)
-    articles = models.Article.objects.filter(q1 | q2)
+    articles = models.Article.objects.filter(q1 | q2).order_by('-published')
     paginator = Paginator(articles, 6)
     page = request.GET.get('page')
     articles_page = paginator.get_page(page)
